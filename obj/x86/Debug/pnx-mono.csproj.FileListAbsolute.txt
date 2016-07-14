@@ -1,0 +1,13 @@
+C:\Users\David\Documents\Projects\mono-multicast\bin\Debug\pnx-mono.exe
+C:\Users\David\Documents\Projects\mono-multicast\bin\Debug\pnx-mono.pdb
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\pnx-mono.exe
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\pnx-mono.pdb
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\pnx-mono.csprojResolveAssemblyReference.cache
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug\pnx-mono.exe
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug\pnx-mono.pdb
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug\Mono.Data.Sqlite.dll
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug\System.Data.Portable.dll
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug\System.Transactions.Portable.dll
+C:\Users\David\Source\Repos\mono-multicast\obj\x86\Debug\pnx-mono.csprojResolveAssemblyReference.cache
+C:\Users\David\Source\Repos\mono-multicast\obj\x86\Debug\pnx-mono.exe
+C:\Users\David\Source\Repos\mono-multicast\obj\x86\Debug\pnx-mono.pdb

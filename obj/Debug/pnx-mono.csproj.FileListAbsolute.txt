@@ -1,0 +1,14 @@
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug-Any\pnx-mono.exe
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug-Any\pnx-mono.pdb
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug-Any\BinaryRage.dll
+C:\Users\David\Source\Repos\mono-multicast\bin\Debug-Any\BinaryRage.pdb
+C:\Users\David\Source\Repos\mono-multicast\obj\Debug\pnx-mono.csprojResolveAssemblyReference.cache
+C:\Users\David\Source\Repos\mono-multicast\obj\Debug\pnx-mono.exe
+C:\Users\David\Source\Repos\mono-multicast\obj\Debug\pnx-mono.pdb
+C:\Users\David\Source\Repos\pnx-mono\obj\Debug\pnx-mono.exe
+C:\Users\David\Source\Repos\pnx-mono\obj\Debug\pnx-mono.pdb
+C:\Users\David\Source\Repos\pnx-mono\bin\Debug-Any\pnx-mono.exe
+C:\Users\David\Source\Repos\pnx-mono\bin\Debug-Any\pnx-mono.pdb
+C:\Users\David\Source\Repos\pnx-mono\bin\Debug-Any\BinaryRage.dll
+C:\Users\David\Source\Repos\pnx-mono\bin\Debug-Any\BinaryRage.pdb
+C:\Users\David\Source\Repos\pnx-mono\obj\Debug\pnx-mono.csprojResolveAssemblyReference.cache

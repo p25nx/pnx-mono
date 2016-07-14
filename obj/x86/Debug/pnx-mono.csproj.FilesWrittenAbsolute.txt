@@ -1,0 +1,5 @@
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\.NETFramework,Version=v4.5.AssemblyAttribute.cs
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\pnx-mono.exe
+C:\Users\David\Documents\Projects\mono-multicast\bin\Debug\pnx-mono.exe.mdb
+C:\Users\David\Documents\Projects\mono-multicast\bin\Debug\pnx-mono.exe
+C:\Users\David\Documents\Projects\mono-multicast\obj\x86\Debug\pnx-mono.exe.mdb
