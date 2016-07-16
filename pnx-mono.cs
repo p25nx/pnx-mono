@@ -164,7 +164,7 @@ namespace pnxmono
             Console.WriteLine (localPath);
             if (Directory.Exists(Path.Combine(localPath,"BRDatabase")))
             {
-                myData = BinaryRage.DB.Get<configData>("", Path.Combine (localPath,"BRdatabase"));
+                myData = BinaryRage.DB.Get<configData>("c", Path.Combine (localPath,"BRdatabase"));
                 defTalkgroup = myData.defaultTG;
                 defTimeout = myData.defaultTimeout;
             }
@@ -172,7 +172,7 @@ namespace pnxmono
             {
                 myData.defaultTG = "10100";
                 myData.defaultTimeout = 60;
-                BinaryRage.DB.Insert("", myData, Path.Combine(localPath,"BRdatabase"));
+                BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
             }
 
             tgString = defTalkgroup;
