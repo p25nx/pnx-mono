@@ -285,8 +285,8 @@ namespace pnxmono
             configData myData = new configData();
             myData.defaultTG = qscoll[0];
             myData.defaultTimeout = Int32.Parse(qscoll[1]);
-            string path = Directory.GetCurrentDirectory();
-            BinaryRage.DB.Insert("c", myData, path + "\\BRdatabase\\");
+            string localPath = Directory.GetCurrentDirectory();
+            BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
         }
     }
 
