@@ -220,8 +220,8 @@ namespace pnxmono
                 p.outputStream.BaseStream.Flush();
             }
             configData myData = new configData();
-            string path = Directory.GetCurrentDirectory();
-            myData = BinaryRage.DB.Get<configData>("c", path+ "//BRdatabase//");
+            string localPath = Directory.GetCurrentDirectory();
+            myData = BinaryRage.DB.Get<configData>("c", Path.Combine(localPath,"BRdatabase"));
             MainClass.defTalkgroup = myData.defaultTG;
             MainClass.defTimeout = myData.defaultTimeout;
             Console.WriteLine("request: {0}", p.http_url);

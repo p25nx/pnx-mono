@@ -60,7 +60,7 @@
     <StartupObject>pnxmono.MainClass</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\..\..\..\..\opt\pnx\</OutputPath>
+    <OutputPath>..\..\..\..\..\opt\pnx\bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BinaryRage, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

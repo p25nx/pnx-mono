@@ -130,6 +130,8 @@ namespace pnxmono
         public static List<Timer> eotTimers = new List<Timer>();
         public static string defTalkgroup;
         public static int defTimeout;
+        public static bool useVoicePrompts;
+        public static bool useCT;
         // states for systemState
         public const int state_sending = 0;
         public const int state_receiving = 1;
@@ -159,11 +161,19 @@ namespace pnxmono
                 myData = BinaryRage.DB.Get<configData>("c", Path.Combine (localPath,"BRdatabase"));
                 defTalkgroup = myData.defaultTG;
                 defTimeout = myData.defaultTimeout;
+                useVoicePrompts = myData.useVoicePrompts;
+                useCT = myData.useCT ;
             }
             else
             {
                 myData.defaultTG = "10100";
+                defTalkgroup = "10100";
                 myData.defaultTimeout = 60;
+                defTimeout = 60;
+                myData.useCT = true;
+                useCT = true;
+                myData.useVoicePrompts = true;
+                useVoicePrompts = true;
                 BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
             }
             tgString = defTalkgroup;
@@ -306,7 +316,7 @@ namespace pnxmono
                                             connectedClients[i].stunID = messageStunID;
                                             Console.WriteLine(connectTime.ToString() + " UTC :Connected to" + tcpClient.Client.RemoteEndPoint.ToString());
                                             connectedClients[i].status = 1;
-                                            saysomething(sounds.startupArray);                                        }
+                                            if (useVoicePrompts) saysomething(sounds.startupArray);                                        }
                                     }
                                     byte[] reply = StringToByteArray("083100000002FFFD73");
                                     reply[6] = (byte)messageStunID;
@@ -499,7 +509,7 @@ namespace pnxmono
                 mJoined = 0;
                 // join default mcast group
                 createUDPThread(Int32.Parse(defTalkgroup));
-                saysomething(dictionary["default"]);
+                if (useVoicePrompts) saysomething(dictionary["default"]);
                 tgID = defaultTalkGroup;
             }
             }
@@ -678,14 +688,13 @@ namespace pnxmono
                         if (announceNeeded == true)
                         {
                             byte[][] thisArrayRef = dictionary[tgID.ToString()];
-                            Console.WriteLine("talking");
-                            saysomething(thisArrayRef);
+                            if (useVoicePrompts) saysomething(thisArrayRef);
                             announceNeeded = false;
                         }
                     }
                     else
                     {
-                        saysomething(sounds.cTone);
+                       if (useCT) saysomething(sounds.cTone);
                     }
                     sendingToMcastFlag = 0;
                 }
