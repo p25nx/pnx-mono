@@ -687,9 +687,16 @@ namespace pnxmono
                     {
                         if (announceNeeded == true)
                         {
-                            byte[][] thisArrayRef = dictionary[tgID.ToString()];
-                            if (useVoicePrompts) saysomething(thisArrayRef);
-                            announceNeeded = false;
+                            try
+                            {
+                                byte[][] thisArrayRef = dictionary[tgID.ToString()];
+                                if (useVoicePrompts) saysomething(thisArrayRef);
+                                announceNeeded = false;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Missing voice file");
+                            }
                         }
                     }
                     else
