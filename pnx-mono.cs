@@ -341,8 +341,8 @@ namespace pnxmono
                                             connectedClients[i].stunID = messageStunID;
                                             Console.WriteLine(connectTime.ToString() + " UTC :Connected to" + tcpClient.Client.RemoteEndPoint.ToString());
                                             connectedClients[i].status = 1;
-                                           /* soundDictionary._dict.TryGetValue("startup", out thisVal);
-                                            if (useVoicePrompts) saysomething(thisVal);*/
+                                            soundDictionary._dict.TryGetValue("startup", out thisVal);
+                                            if (useVoicePrompts) saysomething(thisVal);
                                             }
                                     }
                                     byte[] reply = StringToByteArray("083100000002FFFD73");
