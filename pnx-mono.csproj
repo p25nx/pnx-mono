@@ -71,18 +71,22 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="0_speech.cs" />
-    <Compile Include="1_speech.cs" />
-    <Compile Include="2_speech.cs" />
-    <Compile Include="ctone.cs" />
+    <Compile Include="ctone2.cs" />
     <Compile Include="default_speech.cs" />
-    <Compile Include="na_speech.cs" />
+    <Compile Include="speech_france.cs" />
+    <Compile Include="speech_germany.cs" />
+    <Compile Include="speech_na.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pnx-mono.cs" />
-    <Compile Include="sounds.cs" />
-    <Compile Include="systemstart_speech.cs" />
+    <Compile Include="speech_naTac1.cs" />
+    <Compile Include="speech_naTac2.cs" />
+    <Compile Include="speech_naTac3.cs" />
+    <Compile Include="speech_systemstart.cs" />
+    <Compile Include="speech_wwTac1.cs" />
+    <Compile Include="speech_wwTac2.cs" />
+    <Compile Include="speech_wwTac3.cs" />
     <Compile Include="webserver.cs" />
-    <Compile Include="ww_speech.cs" />
+    <Compile Include="speech_ww.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -82,6 +82,25 @@ namespace pnxmono
         public bool useCT { get; set; }
     }
    
+    public static class soundDictionary
+    {
+        public static Dictionary<string, byte[][]> _dict = new Dictionary<string, byte[][]>
+        {
+            {"10100",sounds.speech_ww },
+            {"10101",sounds.speech_wwTac1 },
+            {"10102",sounds.speech_wwTac2 },
+            {"10103",sounds.speech_wwTac3 },
+            {"10200",sounds.speech_na },
+            {"10201",sounds.speech_naTac1 },
+            {"10202",sounds.speech_naTac2 },
+            {"10203",sounds.speech_naTac3 },
+            {"10310",sounds.speech_france },
+            {"10320",sounds.speech_germany },
+            {"startup",sounds.speech_systemstart },
+            {"default",sounds.default_speech }
+        };
+    }
+
     class MainClass
     {
         public static UdpClient udpClient;
@@ -136,6 +155,9 @@ namespace pnxmono
         public const int state_sending = 0;
         public const int state_receiving = 1;
 
+
+            
+
         [STAThread]
         public static void Main(string[] args)
         
@@ -178,8 +200,10 @@ namespace pnxmono
             }
             tgString = defTalkgroup;
             defaultTalkGroup = Convert.ToInt32(defTalkgroup);
-            // init default Timer
+
             
+            // init default Timer
+
             WebServer.monoLocalWS();
             // set up initial UDP thread
             createUDPThread(defaultTalkGroup);
@@ -234,6 +258,7 @@ namespace pnxmono
         }
         private static void HandleClientComm(object client)
         {
+            byte[][] thisVal;
             TcpClient tcpClient = (TcpClient)client;
             // tcpClient.ReceiveTimeout = 10000;
             connectedClients.Add(new clients(tcpClient, 0, "", 0));
@@ -316,7 +341,9 @@ namespace pnxmono
                                             connectedClients[i].stunID = messageStunID;
                                             Console.WriteLine(connectTime.ToString() + " UTC :Connected to" + tcpClient.Client.RemoteEndPoint.ToString());
                                             connectedClients[i].status = 1;
-                                            if (useVoicePrompts) saysomething(sounds.startupArray);                                        }
+                                           /* soundDictionary._dict.TryGetValue("startup", out thisVal);
+                                            if (useVoicePrompts) saysomething(thisVal);*/
+                                            }
                                     }
                                     byte[] reply = StringToByteArray("083100000002FFFD73");
                                     reply[6] = (byte)messageStunID;
@@ -495,13 +522,9 @@ namespace pnxmono
         }
         public static void TGtimerCallback (object state)
         {
+            byte[][] thisVal;
             if (tgID != defaultTalkGroup)
             {
-                Dictionary<string, byte[][]> dictionary = new Dictionary<string, byte[][]>();
-                dictionary.Add("10100", sounds.ww_speech);
-                dictionary.Add("10200", sounds.na_speech);
-                dictionary.Add("default", sounds.default_speech);
-
                 udpClient.DropMulticastGroup(mCastGroup); // do immediate drop on previous group
                 Console.WriteLine("Revert timeout: Leaving group " + mCastGroup.ToString());
                 udpClient = null;
@@ -509,7 +532,8 @@ namespace pnxmono
                 mJoined = 0;
                 // join default mcast group
                 createUDPThread(Int32.Parse(defTalkgroup));
-                if (useVoicePrompts) saysomething(dictionary["default"]);
+                soundDictionary._dict.TryGetValue("default", out thisVal);
+                if (useVoicePrompts) saysomething (thisVal);
                 tgID = defaultTalkGroup;
             }
             }
@@ -651,12 +675,9 @@ namespace pnxmono
         /* hit this timer when no more data has come in for x ms, assume that means remote is not transmitting any more */
         public static void EOTCallback(object state)
         {
-            Dictionary<string, byte[][]> dictionary = new Dictionary<string, byte[][]>();
-            dictionary.Add("10100", sounds.ww_speech);
-            dictionary.Add("10200", sounds.na_speech);
-
             lock (locker)
             {
+                byte[][] thisVal;
                 Console.WriteLine("End of transmission");
                 endoftransmissionTimer.Change(-1, -1);
                 if (keyDownFlag == 1)
@@ -687,10 +708,11 @@ namespace pnxmono
                     {
                         if (announceNeeded == true)
                         {
+                            Console.WriteLine("talk start");
                             try
                             {
-                                byte[][] thisArrayRef = dictionary[tgID.ToString()];
-                                if (useVoicePrompts) saysomething(thisArrayRef);
+                                soundDictionary._dict.TryGetValue(tgID.ToString(), out thisVal);
+                                if (useVoicePrompts) saysomething(thisVal);
                                 announceNeeded = false;
                             }
                             catch
@@ -701,7 +723,7 @@ namespace pnxmono
                     }
                     else
                     {
-                       if (useCT) saysomething(sounds.cTone);
+                       if (useCT) saysomething(sounds.cTone2);
                     }
                     sendingToMcastFlag = 0;
                 }
@@ -798,7 +820,7 @@ namespace pnxmono
                 foreach (byte[] innerArray in thingToSay)
                 {
                     sendToV24(innerArray);
-                    System.Threading.Thread.Sleep(20);
+                    System.Threading.Thread.Sleep(8);
                 }
                 keyDownFlag = 0;
                 announceflag = 0;
