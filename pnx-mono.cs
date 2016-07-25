@@ -94,8 +94,16 @@ namespace pnxmono
             {"10201",sounds.speech_naTac1 },
             {"10202",sounds.speech_naTac2 },
             {"10203",sounds.speech_naTac3 },
+            {"10300",sounds.speech_Europe },
+            {"10301",sounds.speech_EuTac1 },
+            {"10302",sounds.speech_EuTac2 },
+            {"10303",sounds.speech_EuTac3 },
             {"10310",sounds.speech_france },
             {"10320",sounds.speech_germany },
+            {"10400",sounds.speech_Pacific },
+            {"10401",sounds.speech_PacTac1 },
+            {"10402",sounds.speech_PacTac2 },
+            {"10403",sounds.speech_PacTac3 },
             {"startup",sounds.speech_systemstart },
             {"default",sounds.default_speech }
         };
@@ -820,7 +828,7 @@ namespace pnxmono
                 foreach (byte[] innerArray in thingToSay)
                 {
                     sendToV24(innerArray);
-                    System.Threading.Thread.Sleep(8);
+                    System.Threading.Thread.Sleep(10);
                 }
                 keyDownFlag = 0;
                 announceflag = 0;

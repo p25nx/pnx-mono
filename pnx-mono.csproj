@@ -73,6 +73,10 @@
   <ItemGroup>
     <Compile Include="ctone2.cs" />
     <Compile Include="default_speech.cs" />
+    <Compile Include="speech_Europe.cs" />
+    <Compile Include="speech_EuTac1.cs" />
+    <Compile Include="speech_EuTac2.cs" />
+    <Compile Include="speech_EuTac3.cs" />
     <Compile Include="speech_france.cs" />
     <Compile Include="speech_germany.cs" />
     <Compile Include="speech_na.cs" />
@@ -81,6 +85,10 @@
     <Compile Include="speech_naTac1.cs" />
     <Compile Include="speech_naTac2.cs" />
     <Compile Include="speech_naTac3.cs" />
+    <Compile Include="speech_Pacific.cs" />
+    <Compile Include="speech_PacTac1.cs" />
+    <Compile Include="speech_PacTac2.cs" />
+    <Compile Include="speech_PacTac3.cs" />
     <Compile Include="speech_systemstart.cs" />
     <Compile Include="speech_wwTac1.cs" />
     <Compile Include="speech_wwTac2.cs" />
