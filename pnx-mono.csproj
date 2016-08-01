@@ -98,6 +98,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="bin\Release\pnx-mono.vshost.exe.manifest" />
     <None Include="packages.config" />
     <None Include="pnx-mono.userprefs" />
   </ItemGroup>
@@ -113,8 +114,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="bin\Debug-Any\" />
+    <Content Include="bin\Release\BinaryRage.dll" />
+    <Content Include="bin\Release\BinaryRage.pdb" />
+    <Content Include="bin\Release\pnx-mono.exe" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
