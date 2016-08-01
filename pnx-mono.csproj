@@ -121,9 +121,7 @@
   <ItemGroup>
     <Content Include="bin\Release\BinaryRage.dll" />
     <Content Include="bin\Release\BinaryRage.pdb" />
-    <Content Include="bin\Release\pnx-mono.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="bin\Release\pnx-mono.exe" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
