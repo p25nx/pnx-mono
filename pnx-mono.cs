@@ -186,7 +186,7 @@ namespace pnxmono
             configData myData = new configData();
             // get current directory
             string localPath = Directory.GetCurrentDirectory();
-            //Console.WriteLine (localPath);
+            Console.WriteLine ("Checking for directory " + Path.Combine(localPath,"BRdatabase"));
             if (Directory.Exists(Path.Combine(localPath,"BRdatabase")))
             {
                 myData = BinaryRage.DB.Get<configData>("c", Path.Combine (localPath,"BRdatabase"));
@@ -205,6 +205,7 @@ namespace pnxmono
                 useCT = true;
                 myData.useVoicePrompts = true;
                 useVoicePrompts = true;
+                Console.WriteLine("about to insert " + Path.Combine(localPath, "BRdatabase"));
                 BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
             }
             tgString = defTalkgroup;
