@@ -1,5 +1,5 @@
 ﻿<Properties StartupItem="pnx-mono.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ActiveRuntime="Mono 4.2.3 (Visual)" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ActiveRuntime="Mono 4.2.3 (Visual)" />
   <MonoDevelop.Ide.Workbench ActiveDocument="pnx-mono.cs">
     <Files>
       <File FileName="pnx-mono.cs" Line="1" Column="1" />
