@@ -98,6 +98,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="bin\Release\BRdatabase\c\c.odb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="bin\Release\pnx-mono.vshost.exe.manifest" />
     <None Include="packages.config" />
     <None Include="pnx-mono.userprefs" />
@@ -118,7 +121,9 @@
   <ItemGroup>
     <Content Include="bin\Release\BinaryRage.dll" />
     <Content Include="bin\Release\BinaryRage.pdb" />
-    <Content Include="bin\Release\pnx-mono.exe" />
+    <Content Include="bin\Release\pnx-mono.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
