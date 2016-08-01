@@ -187,7 +187,7 @@ namespace pnxmono
             // get current directory
             string localPath = Directory.GetCurrentDirectory();
             //Console.WriteLine (localPath);
-            if (Directory.Exists(Path.Combine(localPath,"BRDatabase")))
+            if (Directory.Exists(Path.Combine(localPath,"BRdatabase")))
             {
                 myData = BinaryRage.DB.Get<configData>("c", Path.Combine (localPath,"BRdatabase"));
                 defTalkgroup = myData.defaultTG;
