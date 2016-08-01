@@ -128,6 +128,7 @@ namespace pnxmono
         public static Timer endoftransmissionTimer;
         public static Timer udpStarterTimer;
         public static Timer revertTimer;
+        public static Timer mcastJoinReminderTimer;
         //public static Timer watchdogTimer;
         public static Stopwatch stopwatch;
         public static long maxDelayTime;
@@ -222,7 +223,11 @@ namespace pnxmono
             endoftransmissionTimer = new Timer(EOTCallback, thisState, -1, -1);
 
             // tg default revert timer
-            revertTimer = new Timer(TGtimerCallback, null, Timeout.Infinite, Timeout.Infinite); 
+            revertTimer = new Timer(TGtimerCallback, null, Timeout.Infinite, Timeout.Infinite);
+
+            // mcast join timer
+
+            mcastJoinReminderTimer = new Timer(reminderCallback, null, 1000 * 15, Timeout.Infinite);
 
             // start listening for local connection from V.24 Device
             tcpListener = new TcpListener(IPAddress.Any, 1994);
@@ -680,6 +685,12 @@ namespace pnxmono
             string thisAddress = "239." + region+ "." + b.ToString() + "." + c.ToString();
             return thisAddress;
         }
+        
+        public static void reminderCallback(object state)
+        {
+   //         udpClient.JoinMulticastGroup(mCastGroup);
+        }
+        
         /* hit this timer when no more data has come in for x ms, assume that means remote is not transmitting any more */
         public static void EOTCallback(object state)
         {
@@ -737,24 +748,7 @@ namespace pnxmono
                 }
             }
         }
-        /* public static void talk(string filePath)
-         {
-             FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-             try
-             {
-                 int length = (int)fileStream.Length;  // get file length
-                 buffer = new byte[length];            // create buffer
-                 int count;                            // actual number of bytes read
-                 int sum = 0;                          // total number of bytes read
-                 // read until Read method returns 0 (end of the stream has been reached)
-                 while ((count = fileStream.Read(buffer, sum, length - sum)) > 0)
-                     sum += count;  // sum is a buffer offset for next reading
-             }
-             finally
-             {
-                 fileStream.Close();
-             }
-         }*/
+       
         public static void timerCallback(object state)
         {
             lock (locker)
@@ -828,7 +822,7 @@ namespace pnxmono
                 foreach (byte[] innerArray in thingToSay)
                 {
                     sendToV24(innerArray);
-                    System.Threading.Thread.Sleep(10);
+                    Thread.Sleep(10);
                 }
                 keyDownFlag = 0;
                 announceflag = 0;

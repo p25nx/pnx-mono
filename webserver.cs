@@ -8,7 +8,8 @@ using System.Web;
 using System.Collections.Specialized;
 namespace pnxmono
 {
-    public class HttpProcessor
+    
+    public class  HttpProcessor
     {
         public TcpClient socket;
         public HttpServer srv;
@@ -44,7 +45,7 @@ namespace pnxmono
             // we can't use a StreamReader for input, because it buffers up extra data on us inside it's
             // "processed" view of the world, and we want the data raw after the headers
             inputStream = new BufferedStream(socket.GetStream());
-            // we probably shouldn't be using a streamwriter for all output from handlers either
+
             outputStream = new StreamWriter(new BufferedStream(socket.GetStream()));
             try
             {
