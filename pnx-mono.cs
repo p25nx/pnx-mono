@@ -206,7 +206,7 @@ namespace pnxmono
                 myData.useVoicePrompts = true;
                 useVoicePrompts = true;
                 Console.WriteLine("about to insert " + Path.Combine(localPath, "BRdatabase"));
-                BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
+               // BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
             }
             tgString = defTalkgroup;
             defaultTalkGroup = Convert.ToInt32(defTalkgroup);
