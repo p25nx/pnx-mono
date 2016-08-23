@@ -4,7 +4,6 @@ C:\Users\David\Source\Repos\mono-multicast\bin\Release\BinaryRage.pdb
 C:\Users\David\Source\Repos\mono-multicast\obj\Release\pnx-mono.exe
 C:\opt\pnx\pnx-mono.exe
 C:\opt\pnx\bin\Release\pnx-mono.exe
-C:\opt\pnx-mono\bin\Release\pnx-mono.exe
-C:\Users\David\Source\Repos\pnx-mono\obj\Release\pnx-mono.csprojResolveAssemblyReference.cache
+C:\opt\pnx-mono\pnx-mono.exe
 C:\Users\David\Source\Repos\pnx-mono\obj\Release\pnx-mono.exe
-C:\opt\pnx-mono\bin\Release\bin\Release\BRdatabase\c\c.odb
+C:\Users\David\Source\Repos\pnx-mono\obj\Release\pnx-mono.csprojResolveAssemblyReference.cache

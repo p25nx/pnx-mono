@@ -7,6 +7,8 @@ using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using LiteDB;
+
 namespace pnxmono
 {
     public partial class sounds
@@ -74,12 +76,14 @@ namespace pnxmono
 
     
     [Serializable]
-    public class configData
+    public class ConfigData
     {
+        public int Id { get; set; }
         public string defaultTG { get; set; }
         public int defaultTimeout { get; set; }
         public bool useVoicePrompts { get; set; }
         public bool useCT { get; set; }
+        public bool useLocalCT { get; set; }
     }
    
     public static class soundDictionary
@@ -143,7 +147,8 @@ namespace pnxmono
         public static int sendingToMcastFlag = 0;
         public static string currentTGString = "";
         public static string currentMcastGroup = "";
-        public static bool announceNeeded = false;  
+        public static bool announceNeeded = false;
+        public static bool okToTalk = true; // allows us to interrupt an announcement if someone starts talking over it from the other end.
         // trying to clean this up and keep them as ints.
         public static int defaultTalkGroup = 0;
         public static int lastTalkGroup = 0;
@@ -160,6 +165,7 @@ namespace pnxmono
         public static int defTimeout;
         public static bool useVoicePrompts;
         public static bool useCT;
+        public static bool useLocalCT;
         // states for systemState
         public const int state_sending = 0;
         public const int state_receiving = 1;
@@ -183,41 +189,47 @@ namespace pnxmono
             {
                 systemEnv = 1;
             }
-            configData myData = new configData();
+
             // get current directory
             string localPath = Directory.GetCurrentDirectory();
             Console.WriteLine("Local Path = " + localPath);
-            
-            Console.WriteLine ("Checking for directory " + Path.Combine(localPath,"BRdatabase"));
-            if (Directory.Exists(Path.Combine(localPath,"BRdatabase")))
+
+            if (File.Exists("MyData.db"))
             {
-                Console.WriteLine("Path exisits");
-                myData = BinaryRage.DB.Get<configData>("c", Path.Combine (localPath,"BRdatabase"));
-                defTalkgroup = myData.defaultTG;
-                defTimeout = myData.defaultTimeout;
-                useVoicePrompts = myData.useVoicePrompts;
-                useCT = myData.useCT ;
+                ConfigData status = getDBData();
+                useVoicePrompts = status.useVoicePrompts;
+                defTalkgroup = status.defaultTG;
+                defTimeout = status.defaultTimeout;
+                useCT = status.useCT;
+                useLocalCT = status.useLocalCT;
             }
             else
+            using (var db = new LiteDatabase ("MyData.db"))
             {
-                myData.defaultTG = "10100";
+                var configs = db.GetCollection<ConfigData>("config");
+                    var myData = new ConfigData
+                    {
+                        defaultTG = "10100",
+                        defaultTimeout = 60,
+                        useCT = true,
+                        useLocalCT = true,
+                        useVoicePrompts = true
+                    };
+               
                 defTalkgroup = "10100";
-                myData.defaultTimeout = 60;
                 defTimeout = 60;
-                myData.useCT = true;
                 useCT = true;
-                myData.useVoicePrompts = true;
                 useVoicePrompts = true;
-                Console.WriteLine("about to insert " + Path.Combine(localPath, "BRdatabase"));
-               // BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
-            }
+                configs.Insert(myData);
+           }
+
             tgString = defTalkgroup;
             defaultTalkGroup = Convert.ToInt32(defTalkgroup);
 
-            
+
             // init default Timer
 
-            WebServer.monoLocalWS();
+            MyHttpServer.WebServer.monoLocalWS();
             // set up initial UDP thread
             createUDPThread(defaultTalkGroup);
             udpStarterTimer = new Timer(udpStarterCallback, null, 10, 10); // call udpStarter ever 10ms
@@ -632,7 +644,7 @@ namespace pnxmono
                         if (keyDownFlag == 0)
                         {
                             Console.WriteLine("Keydown from multicast ");
-                            //thisState.stunGroup = messageStunID;
+                            okToTalk = false; // we cant talk if someone else is...
                             txStartTime = DateTime.UtcNow;
                             keyDownFlag = 1;
                             stopwatch = Stopwatch.StartNew();
@@ -703,6 +715,30 @@ namespace pnxmono
                 byte[][] thisVal;
                 Console.WriteLine("End of transmission");
                 endoftransmissionTimer.Change(-1, -1);
+
+                Console.WriteLine("System State:" + systemState.ToString());
+                if (systemState == state_sending)
+                {
+                    if (announceNeeded == true)
+                    {
+                        Console.WriteLine("talk start");
+                        try
+                        {
+                            soundDictionary._dict.TryGetValue(tgID.ToString(), out thisVal);
+                            if (useVoicePrompts) saysomething(thisVal);
+                            announceNeeded = false;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Missing voice file");
+                        }
+                    }
+                }
+                else
+                {
+                    if (useCT) saysomething(sounds.cTone2);
+                }
+
                 if (keyDownFlag == 1)
                 {
                     Console.WriteLine("Unkey");
@@ -726,28 +762,7 @@ namespace pnxmono
                     }
                     myTimes.Clear();
                     maxDelayTime = 0;
-                    Console.WriteLine("System State:" + systemState.ToString());
-                    if (systemState == state_sending)
-                    {
-                        if (announceNeeded == true)
-                        {
-                            Console.WriteLine("talk start");
-                            try
-                            {
-                                soundDictionary._dict.TryGetValue(tgID.ToString(), out thisVal);
-                                if (useVoicePrompts) saysomething(thisVal);
-                                announceNeeded = false;
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Missing voice file");
-                            }
-                        }
-                    }
-                    else
-                    {
-                       if (useCT) saysomething(sounds.cTone2);
-                    }
+                    
                     sendingToMcastFlag = 0;
                 }
             }
@@ -812,21 +827,46 @@ namespace pnxmono
                 }
             }
         }
+
         /* utils */
 
-
-
-
-        public static void saysomething(byte[][] thingToSay)
+        public static ConfigData getDBData()
         {
+            ConfigData thisData = new ConfigData();
+            using (var db = new LiteDatabase("MyData.db"))
+            {
+               
+                var storedConfigData = db.GetCollection("config");
+                var results = storedConfigData.FindAll();
+                //var doc = BsonMapper.Global.ToDocument(new ConfigData());
+
+                thisData.Id = results.First().RawValue["_id"].AsInt32;
+                thisData.useVoicePrompts = results.First().RawValue["useVoicePrompts"].AsBoolean;
+                thisData.defaultTG = results.First().RawValue["defaultTG"].AsString;
+                thisData.defaultTimeout = results.First().RawValue["defaultTimeout"].AsInt32;
+                thisData.useCT = results.First().RawValue["useCT"].AsBoolean;
+                thisData.useLocalCT = results.First().RawValue["useLocalCT"].AsBoolean;
+            }
+            return thisData;
+        }
+
+
+
+public static void saysomething(byte[][] thingToSay)
+        {
+            okToTalk = true;
             systemState = state_sending;
             {
                 keyDownFlag = 1;
                 announceflag = 1;
                 foreach (byte[] innerArray in thingToSay)
                 {
-                    sendToV24(innerArray);
-                    Thread.Sleep(10);
+                    if (okToTalk)
+                    {
+                        sendToV24(innerArray);
+                        Thread.Sleep(10);
+                    }
+                    else break;
                 }
                 keyDownFlag = 0;
                 announceflag = 0;

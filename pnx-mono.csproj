@@ -60,11 +60,11 @@
     <StartupObject>pnxmono.MainClass</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\..\..\..\..\opt\pnx-mono\bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\opt\pnx-mono\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BinaryRage, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\BinaryRage.1.4.0.0\lib\net40\BinaryRage.dll</HintPath>
+    <Reference Include="LiteDB, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>packages\LiteDB.2.0.0\lib\net35\LiteDB.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -98,9 +98,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="bin\Release\BRdatabase\c\c.odb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="bin\Release\pnx-mono.vshost.exe.manifest" />
     <None Include="packages.config" />
     <None Include="pnx-mono.userprefs" />

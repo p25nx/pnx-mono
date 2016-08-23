@@ -6,10 +6,12 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Web;
 using System.Collections.Specialized;
+using LiteDB;
+
 namespace pnxmono
 {
-    
-    public class  HttpProcessor
+
+    public class HttpProcessor
     {
         public TcpClient socket;
         public HttpServer srv;
@@ -19,7 +21,7 @@ namespace pnxmono
         public string http_url;
         public string http_protocol_versionstring;
         public Hashtable httpHeaders = new Hashtable();
-     
+
         private static int MAX_POST_SIZE = 10 * 1024 * 1024; // 10MB
         public HttpProcessor(TcpClient s, HttpServer srv)
         {
@@ -81,17 +83,17 @@ namespace pnxmono
             http_method = tokens[0].ToUpper();
             http_url = tokens[1];
             http_protocol_versionstring = tokens[2];
-            Console.WriteLine("starting: " + request);
+            //Console.WriteLine("starting: " + request);
         }
         public void readHeaders()
         {
-            Console.WriteLine("readHeaders()");
+           // Console.WriteLine("readHeaders()");
             String line;
             while ((line = streamReadLine(inputStream)) != null)
             {
                 if (line.Equals(""))
                 {
-                    Console.WriteLine("got headers");
+                  //  Console.WriteLine("got headers");
                     return;
                 }
                 int separator = line.IndexOf(':');
@@ -106,7 +108,7 @@ namespace pnxmono
                     pos++; // strip any spaces
                 }
                 string value = line.Substring(pos, line.Length - pos);
-                Console.WriteLine("header: {0}:{1}", name, value);
+               // Console.WriteLine("header: {0}:{1}", name, value);
                 httpHeaders[name] = value;
             }
         }
@@ -122,7 +124,7 @@ namespace pnxmono
             // hand an input stream to the request processor. However, the input stream 
             // we hand him needs to let him see the "end of the stream" at this content 
             // length, because otherwise he won't know when he's seen it all! 
-            Console.WriteLine("get post data start");
+          //  Console.WriteLine("get post data start");
             int content_len = 0;
             MemoryStream ms = new MemoryStream();
             if (httpHeaders.ContainsKey("Content-Length"))
@@ -138,9 +140,9 @@ namespace pnxmono
                 int to_read = content_len;
                 while (to_read > 0)
                 {
-                    Console.WriteLine("starting Read, to_read={0}", to_read);
+                   // Console.WriteLine("starting Read, to_read={0}", to_read);
                     int numread = inputStream.Read(buf, 0, Math.Min(BUF_SIZE, to_read));
-                    Console.WriteLine("read finished, numread={0}", numread);
+                 //   Console.WriteLine("read finished, numread={0}", numread);
                     if (numread == 0)
                     {
                         if (to_read == 0)
@@ -157,7 +159,7 @@ namespace pnxmono
                 }
                 ms.Seek(0, SeekOrigin.Begin);
             }
-            Console.WriteLine("get post data end");
+           // Console.WriteLine("get post data end");
             srv.handlePOSTRequest(this, new StreamReader(ms));
         }
         public void writeSuccess(string content_type = "text/html")
@@ -191,7 +193,7 @@ namespace pnxmono
         }
         public void listen()
         {
-            listener = new TcpListener(IPAddress.Any,port);
+            listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             while (is_active)
             {
@@ -207,6 +209,11 @@ namespace pnxmono
     }
     public class MyHttpServer : HttpServer
     {
+        public static string useVoiceChecked = "off";
+        public static string useLocalCTChecked = "off";
+        public static string useCTChecked = "off";
+        public static ConfigData myData = new ConfigData();
+
         public MyHttpServer(int port)
             : base(port)
         {
@@ -220,53 +227,101 @@ namespace pnxmono
                 fs.CopyTo(p.outputStream.BaseStream);
                 p.outputStream.BaseStream.Flush();
             }
-            configData myData = new configData();
-            string localPath = Directory.GetCurrentDirectory();
-            myData = BinaryRage.DB.Get<configData>("c", Path.Combine(localPath,"BRdatabase"));
-            MainClass.defTalkgroup = myData.defaultTG;
-            MainClass.defTimeout = myData.defaultTimeout;
-            Console.WriteLine("request: {0}", p.http_url);
+
+            // Read local db to show current values on webpage.
+
+            ConfigData status = MainClass.getDBData();
+            
+            MainClass.useVoicePrompts = status.useVoicePrompts;
+            MainClass.defTalkgroup = status.defaultTG;
+            MainClass.defTimeout = status.defaultTimeout;
+            MainClass.useCT = status.useCT;
+            MainClass.useLocalCT = status.useLocalCT;
+            if (MainClass.useCT) useCTChecked = "checked";
+            if (MainClass.useLocalCT) useLocalCTChecked = "checked";
+            if (MainClass.useVoicePrompts) useVoiceChecked = "checked";
+
+           // Console.WriteLine("request: {0}", p.http_url);
             p.writeSuccess();
             p.outputStream.WriteLine("<html xmlns = 'http://www.w3.org/1999/xhtml' dir='ltr' lang='en' id='vbulletin_html'>");
             p.outputStream.WriteLine("<head>");
             p.outputStream.WriteLine("<meta http-equiv='Content-Type' content = 'text/html; charset=ISO-8859-1' />");
             p.outputStream.WriteLine("<html><body><h1 style='color:blue;margin-left:30px;'>P25NX Local Config</h1>");
             p.outputStream.WriteLine("<form method=post action=/form>");
-            p.outputStream.WriteLine("Default TalkGroup: <input type=text name=deftg value=" + MainClass.defaultTalkGroup + ">");
-            p.outputStream.WriteLine("Default TG Timeout: <input type=text name=defto value=" + MainClass.defTimeout.ToString() + ">");
+            p.outputStream.WriteLine("Default TalkGroup: <input type=text name=deftg value=" + MainClass.defaultTalkGroup + "  >");
+            p.outputStream.WriteLine("<br>Default TG Timeout: <input type=text name=defto value=" + MainClass.defTimeout.ToString() + ">");
             p.outputStream.WriteLine("<br>");
-            p.outputStream.WriteLine("Voice Prompts: <input type=checkbox name=voiceprompts value=true>" );
-            p.outputStream.WriteLine("Courtesy Tone: <input type=checkbox name=ctone value=true>");
-            p.outputStream.WriteLine("<input type=submit>");
+            p.outputStream.WriteLine("Use Voice Prompts: <input type=checkbox name=voiceprompts " + useVoiceChecked + " ><BR>");
+            p.outputStream.WriteLine("Use Remote Courtesy Tone: <input type=checkbox name=ctone " + useCTChecked + " ><BR>");
+            p.outputStream.WriteLine("Use Local Courtesy Tone: <input type=checkbox name=lctone " + useLocalCTChecked + " ><BR>");
+            p.outputStream.WriteLine("<br><HR><input type=submit>");
             p.outputStream.WriteLine("</form>");
         }
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
         {
-            Console.WriteLine("POST request: {0}", p.http_url);
+           // Console.WriteLine("POST request: {0}", p.http_url);
             string thisData = inputData.ReadToEnd();
             p.writeSuccess();
             p.outputStream.WriteLine("<html><body><h1 style='color:blue;margin-left:30px;'>P25NX Local Config Result</h1>");
             p.outputStream.WriteLine("<html><body><h2 style='color:blue;margin-left:30px;'>Config Saved.</h2>");
             p.outputStream.WriteLine("<a href=/test>return</a><p>");
-           // p.outputStream.WriteLine("postbody: <pre>{0}</pre>", thisData);
-            NameValueCollection qscoll = HttpUtility.ParseQueryString (thisData);
-            configData myData = new configData();
+            // p.outputStream.WriteLine("postbody: <pre>{0}</pre>", thisData);
+            NameValueCollection qscoll = HttpUtility.ParseQueryString(thisData);
+
+            myData = new ConfigData();
+
+            myData.Id = 1;
+
             myData.defaultTG = qscoll["deftg"];
             myData.defaultTimeout = Int32.Parse(qscoll["defto"]);
-            myData.useVoicePrompts = Convert.ToBoolean(qscoll["voiceprompts"]);
-            myData.useCT = Convert.ToBoolean(qscoll["ctone"]);
-            string localPath = Directory.GetCurrentDirectory();
-            BinaryRage.DB.Insert("c", myData, Path.Combine(localPath,"BRdatabase"));
+            if (qscoll["voiceprompts"] == "on")
+            {
+                myData.useVoicePrompts = true;
+            }
+            else
+                myData.useVoicePrompts = false;
+
+            if (qscoll["ctone"] == "on")
+            {
+                myData.useCT = true;
+            }
+            else
+                myData.useCT = false;
+
+            if (qscoll["lctone"] == "on")
+            {
+                myData.useLocalCT = true;
+            }
+            else
+                myData.useLocalCT = false;
+
+
+            using (var db = new LiteDatabase("MyData.db"))
+            {
+                var configs = db.GetCollection<ConfigData>("config");
+                configs.Update(myData);
+            }
+
+
+            //update local variables
+            MainClass.useVoicePrompts = myData.useVoicePrompts;
+            MainClass.defTimeout = myData.defaultTimeout;
+            MainClass.useCT = myData.useCT;
+            MainClass.defaultTalkGroup = Int32.Parse(myData.defaultTG);
+            MainClass.useLocalCT = myData.useLocalCT;
+
+
+
         }
-    }
-    public class WebServer
-    {
-        public static void monoLocalWS()
+        public class WebServer
         {
-            HttpServer httpServer;
-            httpServer = new MyHttpServer(8080);
-            Thread thread = new Thread(new ThreadStart(httpServer.listen));
-            thread.Start();
+            public static void monoLocalWS()
+            {
+                HttpServer httpServer;
+                httpServer = new MyHttpServer(8080);
+                Thread thread = new Thread(new ThreadStart(httpServer.listen));
+                thread.Start();
+            }
         }
     }
 }
