@@ -713,10 +713,10 @@ namespace pnxmono
             lock (locker)
             {
                 byte[][] thisVal;
-                Console.WriteLine("End of transmission");
+                Console.WriteLine("End of remote transmission");
                 endoftransmissionTimer.Change(-1, -1);
 
-                Console.WriteLine("System State:" + systemState.ToString());
+                //Console.WriteLine("System State:" + systemState.ToString());
                 if (systemState == state_sending)
                 {
                     if (announceNeeded == true)
@@ -741,7 +741,7 @@ namespace pnxmono
 
                 if (keyDownFlag == 1)
                 {
-                    Console.WriteLine("Unkey");
+                    Console.WriteLine("Local Unkey");
                     if (useLocalCT) saysomething(sounds.cTone);
                     txEndTime = DateTime.UtcNow;
                     keyDownFlag = 0;
