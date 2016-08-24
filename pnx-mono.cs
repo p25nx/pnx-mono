@@ -742,6 +742,7 @@ namespace pnxmono
                 if (keyDownFlag == 1)
                 {
                     Console.WriteLine("Unkey");
+                    if (useLocalCT) saysomething(sounds.cTone);
                     txEndTime = DateTime.UtcNow;
                     keyDownFlag = 0;
                     stopwatch = null;

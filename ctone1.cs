@@ -3,7 +3,7 @@ namespace pnxmono
 {
     public partial class sounds
     {
-        public static byte[][] cTone =
+        public static byte[][] cTone1 =
             {
         new byte [] {
 0x08, 0x31, 0x00, 0x00, 0x00, 0x0c, 0x65, 0xfd,

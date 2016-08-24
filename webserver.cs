@@ -237,6 +237,9 @@ namespace pnxmono
             MainClass.defTimeout = status.defaultTimeout;
             MainClass.useCT = status.useCT;
             MainClass.useLocalCT = status.useLocalCT;
+            useCTChecked = "";
+            useLocalCTChecked = "";
+            useVoiceChecked = "";
             if (MainClass.useCT) useCTChecked = "checked";
             if (MainClass.useLocalCT) useLocalCTChecked = "checked";
             if (MainClass.useVoicePrompts) useVoiceChecked = "checked";

@@ -71,6 +71,8 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ctone.cs" />
+    <Compile Include="ctone1.cs" />
     <Compile Include="ctone2.cs" />
     <Compile Include="default_speech.cs" />
     <Compile Include="speech_Europe.cs" />
