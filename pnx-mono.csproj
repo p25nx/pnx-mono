@@ -60,7 +60,7 @@
     <StartupObject>pnxmono.MainClass</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\..\..\..\..\opt\pnx-mono\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiteDB, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
@@ -118,11 +118,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="bin\Debug-Any\pnx-mono.exe" />
+    <Content Include="bin\Debug-Any\pnx-mono.pdb" />
+    <Content Include="bin\Release\LiteDB.dll" />
+    <Content Include="bin\Release\pnx-mono.exe" />
     <Content Include="packages\LiteDB.2.0.0\lib\net35\LiteDB.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="packages\LiteDB.2.0.0\tools\LiteDB.dll" />
-    <Content Include="packages\LiteDB.2.0.0\tools\LiteDB.Shell.exe" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
