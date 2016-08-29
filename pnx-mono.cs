@@ -839,8 +839,6 @@ namespace pnxmono
                
                 var storedConfigData = db.GetCollection("config");
                 var results = storedConfigData.FindAll();
-                //var doc = BsonMapper.Global.ToDocument(new ConfigData());
-
                 thisData.Id = results.First().RawValue["_id"].AsInt32;
                 thisData.useVoicePrompts = results.First().RawValue["useVoicePrompts"].AsBoolean;
                 thisData.defaultTG = results.First().RawValue["defaultTG"].AsString;
