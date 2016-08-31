@@ -8,5 +8,5 @@ C:\opt\pnx-mono\packages\LiteDB.2.0.0\lib\net35\LiteDB.dll
 C:\opt\pnx-mono\pnx-mono.exe
 C:\Users\David\Source\Repos\pnx-mono\bin\Release\packages\LiteDB.2.0.0\lib\net35\LiteDB.dll
 C:\Users\David\Source\Repos\pnx-mono\bin\Release\pnx-mono.exe
-C:\Users\David\Source\Repos\pnx-mono\bin\Release\LiteDB.dll
 C:\Users\David\Source\Repos\pnx-mono\obj\Release\pnx-mono.exe
+C:\Users\David\Source\Repos\pnx-mono\obj\Release\pnx-mono.csprojResolveAssemblyReference.cache
