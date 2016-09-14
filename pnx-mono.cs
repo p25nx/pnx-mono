@@ -225,6 +225,7 @@ namespace pnxmono
 
             tgString = defTalkgroup;
             defaultTalkGroup = Convert.ToInt32(defTalkgroup);
+            tgID = defaultTalkGroup;
 
 
             // init default Timer
@@ -418,6 +419,10 @@ namespace pnxmono
                                                     if (tgID != defaultTalkGroup)
                                                     {
                                                         revertTimer.Change(defTimeout*1000, Timeout.Infinite); // start timer
+                                                    }
+                                                    else
+                                                    {
+                                                        revertTimer.Change(Timeout.Infinite, Timeout.Infinite); // dont start timer
                                                     }
                                                 }
                                             }
