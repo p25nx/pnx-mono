@@ -10,7 +10,7 @@ or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 You should have received a copy of the GNU General Public License along with this program;
 if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-LiteDB.dll is free software licensed under the MIT license. This is also included in the source tree.
+LiteDB.dll is free software licensed under the MIT license. See LITEDB on Git for information on litedb.
 */
 
 using System;

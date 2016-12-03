@@ -124,7 +124,6 @@
     <Content Include="bin\Debug-Any\pnx-mono.pdb" />
     <Content Include="bin\Release\LiteDB.dll" />
     <Content Include="bin\Release\pnx-mono.exe" />
-    <Content Include="MIT-LICENSE.txt" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
