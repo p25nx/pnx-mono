@@ -63,8 +63,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LiteDB, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
-      <HintPath>packages\LiteDB.2.0.0\lib\net35\LiteDB.dll</HintPath>
+    <Reference Include="LiteDB, Version=2.0.2.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\LiteDB.2.0.2\lib\net35\LiteDB.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -101,7 +102,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="packages\LiteDB.2.0.0\LiteDB.2.0.0.nupkg" />
     <None Include="pnx-mono.userprefs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,15 +116,14 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="packages\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug-Any\pnx-mono.exe" />
     <Content Include="bin\Debug-Any\pnx-mono.pdb" />
     <Content Include="bin\Release\LiteDB.dll" />
     <Content Include="bin\Release\pnx-mono.exe" />
-    <Content Include="packages\LiteDB.2.0.0\lib\net35\LiteDB.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
